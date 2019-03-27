@@ -1,6 +1,6 @@
 // Import app variables
 @import 'app-variables';
- 
+
 // Import the theme’s main ruleset - both index and platform specific.
 @import '~nativescript-theme-core/scss/index';
 @import '~nativescript-theme-core/scss/platforms/index.android';
@@ -9,3 +9,16 @@
 @import 'app-common';
 
 // Place any CSS rules you want to apply only on Android here
+
+.btn-primary {
+    height: 50;
+    background-color: #D51A1A;
+    border-radius: 5;
+    font-size: 20;
+    font-weight: 600;
+    width: 100%;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+}
