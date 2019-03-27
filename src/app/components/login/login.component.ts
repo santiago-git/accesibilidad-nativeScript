@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Credentials } from '~/app/interfaces';
 import { Page } from 'tns-core-modules/ui/page/page';
-import { RouterExtensions } from 'nativescript-angular';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { PatientService, SessionService } from '~/app/services';
 
 @Component({
@@ -43,15 +43,13 @@ export class LoginComponent {
     this.processing = true;
 
     this.patientService.login(this.credentials).subscribe(patient => {
-      this.sessionService.login(patient);
+      this.sessionService.setLogin(patient);
       this.processing = false;
-      // this.routerExtensions.navigate(["/home"], { clearHistory: true });
     }, err => {
       this.focusUser();
       this.processing = false;
       alert(err);
     });
-
   }
 
   focusUser() {

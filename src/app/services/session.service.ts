@@ -41,15 +41,13 @@ export class SessionService {
     return null;
   }
 
-  login(patient: Patient) {
+  setLogin(patient: Patient) {
     if (patient) {
       try {
         const sessionString = JSON.stringify(patient);
         appSettings.setString('session', sessionString);
 
         if (appSettings.getString('session')) {
-          console.log(patient);
-
           this.routerExtensions.navigate(['/home'], { clearHistory: true });
         }
 

@@ -7,8 +7,8 @@ import { HomeComponent } from './home.component';
 import { RegisterMedicalEmergencyComponent } from './register-medical-emergency/register-medical-emergency.component';
 
 const routes: Routes = [
-  { path: '**', redirectTo: '', pathMatch: 'full', },
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full', },
+  { path: 'home', component: HomeComponent },
   { path: 'medical-emergency', component: RegisterMedicalEmergencyComponent },
 ]
 
