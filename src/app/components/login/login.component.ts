@@ -35,11 +35,13 @@ export class LoginComponent {
   }
 
   submit() {
+    console.log('redireccionar');
+    this.routerExtensions.navigate(['/home']);
+    return;
     if (!this.credentials.user || !this.credentials.password) {
       this.alert('Por favor ingresa un usuario y contraseña.');
       return;
     }
-
     this.processing = true;
 
     this.patientService.login(this.credentials).subscribe(patient => {
