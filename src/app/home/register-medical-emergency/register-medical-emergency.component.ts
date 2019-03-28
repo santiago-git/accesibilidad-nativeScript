@@ -23,12 +23,13 @@ export class RegisterMedicalEmergencyComponent implements OnInit {
     private medicalEmergencyService: MedicalEmergencyService) {
     this.session = sessionService.getSession();
     this.medicalEmergency = new MedicalEmergency(this.session.id, '', 0, 0);
-    this.enableLocation();
+    this.getLocation();
+    // this.enableLocation();
   }
 
   ngOnInit(): void { }
 
-  enableLocation() {
+  private enableLocation() {
     geolocation.isEnabled().then(function (isEnabled) {
       if (!isEnabled) {
         geolocation.enableLocationRequest().then(function () {
@@ -42,7 +43,7 @@ export class RegisterMedicalEmergencyComponent implements OnInit {
     });
   }
 
-  getLocation() {
+  private getLocation() {
     if (this.myLocation) {
       return Promise.resolve(this.myLocation);
     }
@@ -80,6 +81,8 @@ export class RegisterMedicalEmergencyComponent implements OnInit {
       });
     });
   }
+
+  goBack() { }
 
   logout() {
     this.sessionService.logOut();

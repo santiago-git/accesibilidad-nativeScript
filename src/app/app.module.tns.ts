@@ -8,11 +8,15 @@ import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 // Components
 import { LoginComponent } from './components/login/login.component';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { RegisterMedicalEmergencyComponent } from './home/register-medical-emergency/register-medical-emergency.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    HomeComponent,
+    RegisterMedicalEmergencyComponent
   ],
   imports: [
     NativeScriptModule,

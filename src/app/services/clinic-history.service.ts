@@ -11,8 +11,8 @@ import { RequestResult } from '~/app/interfaces';
 })
 export class ClinicHistoryService {
 
-  urlServices: string;
-  patient: Patient;
+  private urlServices: string;
+  private patient: Patient;
 
   constructor(private http: HttpClient,
     private serviceUrlService: ServiceUrlService,

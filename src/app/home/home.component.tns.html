@@ -1,0 +1,48 @@
+<TabView id="tabViewContainer" [(ngModel)]="tabSelectedIndex" (selectedIndexChanged)="onSelectedIndexChanged($event)">
+    <ActionBar title="Accesibilidad móvil"></ActionBar>
+    <StackLayout *tabItem="{title: 'Historia clinica'}">
+        <ListView [items]="clinicHistory" (itemTap)="onItemTap($event)" class="list-group">
+            <ng-template let-country="item" let-i="index" let-odd="odd" let-even="even">
+                <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
+                <StackLayout orientation="horizontal" class="list-group-item">
+                    <Label text="Country: " textWrap="true"></Label>
+                    <Label [text]="country.diagnosis"></Label>
+                    <Label [text]="country.createdAt"></Label>
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </StackLayout>
+    <StackLayout *tabItem="{title: 'Reportar emergencia'}">
+        <StackLayout orientation="vertical" horizontalAlignment="center" verticalAlignment="center" class="form">
+            <Label [text]="message" textWrap="true" class="label-info"></Label>
+
+            <!-- <TextField class="input" hint="Descripción" autocorrect="false" autocapitalizationType="none"
+                [(ngModel)]="medicalEmergency.patient_description" returnKeyType="next"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+            <TextField class="input" hint="Dirección de lugar" autocorrect="false" autocapitalizationType="none"
+                [(ngModel)]="medicalEmergency.address" returnKeyType="next"></TextField>
+            <StackLayout class="hr-light"></StackLayout> -->
+
+            <StackLayout class="input-field">
+                <TextField #patient_description class="input" hint="Descripción" autocorrect="false"
+                    autocapitalizationType="none" [(ngModel)]="medicalEmergency.patient_description"
+                    returnKeyType="next">
+                </TextField>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+            <StackLayout class="input-field">
+                <TextField class="input" hint="Dirección de lugar (opcional)" autocorrect="false"
+                    autocapitalizationType="none" [(ngModel)]="medicalEmergency.address" returnKeyType="next">
+                </TextField>
+                <StackLayout class="hr-light"></StackLayout>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+
+            <Button [isEnabled]="!processing" text="Registrar emergencia" (tap)="createMedicalEmergency()"
+                class="btn btn-primary"></Button>
+            <Button class="btn btn-primary" text="Cerrar sesión" (tap)="logout()"></Button>
+
+            <ActivityIndicator [busy]="processing"></ActivityIndicator>
+        </StackLayout>
+    </StackLayout>
+</TabView>
