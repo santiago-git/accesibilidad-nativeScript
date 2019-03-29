@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { getCurrentLocation, Location } from 'nativescript-geolocation';
 import * as geolocation from 'nativescript-geolocation';
-import { Patient, MedicalEmergency, ClinicHistory } from '~/app/models';
-import { SessionService, MedicalEmergencyService, ClinicHistoryService } from '~/app/services';
+import { Patient, MedicalEmergency, ClinicHistory, MedicalCenter } from '~/app/models';
+import { SessionService, MedicalEmergencyService, ClinicHistoryService, MedicalCenterService } from '~/app/services';
 import { SelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
 
 @Component({
@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   myLocation: Location;
   medicalEmergency: MedicalEmergency;
   @ViewChild('patient_description') patient_description: ElementRef;
+  medicalCenters: MedicalCenter[];
   public clinicHistory: ClinicHistory[];
 
   public imageTaken: any;
@@ -31,25 +32,29 @@ export class HomeComponent implements OnInit {
 
   constructor(private sessionService: SessionService,
     private medicalEmergencyService: MedicalEmergencyService,
+    private medicalCenterService: MedicalCenterService,
     private clinicHistoryService: ClinicHistoryService) {
     this.session = sessionService.getSession();
     this.medicalEmergency = new MedicalEmergency(this.session.id, '', 0, 0);
     this.getLocation();
     this.getClinicHistory();
-    this.onTakePhoto();
+    this.getMedicalCenters();
+    // this.onTakePhoto();
     // this.enableLocation();
     this.tabSelectedIndex = 0;
-
-
   }
 
   ngOnInit(): void { }
 
+  getMedicalCenters() {
+    this.medicalCenterService.getAll().subscribe(list => {
+      this.medicalCenters = list;
+    });
+  }
+
   getClinicHistory() {
     this.clinicHistoryService.get().subscribe(list => {
       this.clinicHistory = list;
-      console.log(list);
-
     });
   }
 

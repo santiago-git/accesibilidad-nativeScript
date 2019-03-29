@@ -1,13 +1,29 @@
 <TabView id="tabViewContainer" [(ngModel)]="tabSelectedIndex" (selectedIndexChanged)="onSelectedIndexChanged($event)">
-    <ActionBar title="Accesibilidad móvil"></ActionBar>
+    <ActionBar title="Sistema de emergencias">
+        <ActionItem icon="res://icon" (tap)="logout()" ios.position="left"></ActionItem>
+    </ActionBar>
+    <StackLayout *tabItem="{title: 'Centros de atención médica'}">
+        <ListView [items]="medicalCenters" (itemTap)="onItemTap($event)" class="list-group">
+            <ng-template let-medicalCenter="item" let-i="index" let-odd="odd" let-even="even">
+                <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
+                <StackLayout orientation="vertical">
+                    <!-- <Label text="Diagnóstico: " textWrap="true"></Label> -->
+                    <Label [text]="medicalCenter.name"></Label>
+                    <Label [text]="medicalCenter.address"></Label>
+                    <Image class="logo" [src]="medicalCenter.photo"></Image>
+                    <!-- <Label [text]="country.createdAt"></Label> -->
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </StackLayout>
     <StackLayout *tabItem="{title: 'Historia clinica'}">
         <ListView [items]="clinicHistory" (itemTap)="onItemTap($event)" class="list-group">
             <ng-template let-country="item" let-i="index" let-odd="odd" let-even="even">
                 <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
-                <StackLayout orientation="horizontal" class="list-group-item">
-                    <Label text="Country: " textWrap="true"></Label>
-                    <Label [text]="country.diagnosis"></Label>
-                    <Label [text]="country.createdAt"></Label>
+                <StackLayout orientation="vertical" class="list-group-item">
+                    <Label [text]="'Diagnóstico: '+country.diagnosis"></Label>
+                    <Label [text]="'Fecha: '+(country.createdAt | date: 'dd/MM/yyyy hh:mm a')"></Label>
+                    <Label *ngIf="country.description" [text]="'Descripción: '+ (country.description || '...')"></Label>
                 </StackLayout>
             </ng-template>
         </ListView>
@@ -40,7 +56,7 @@
 
             <Button [isEnabled]="!processing" text="Registrar emergencia" (tap)="createMedicalEmergency()"
                 class="btn btn-primary"></Button>
-            <Button class="btn btn-primary" text="Cerrar sesión" (tap)="logout()"></Button>
+            <!-- <Button class="btn btn-primary" text="Cerrar sesión" (tap)="logout()"></Button> -->
 
             <ActivityIndicator [busy]="processing"></ActivityIndicator>
         </StackLayout>

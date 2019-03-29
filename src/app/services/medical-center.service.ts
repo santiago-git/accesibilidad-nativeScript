@@ -10,14 +10,14 @@ import { take, map } from 'rxjs/operators';
 })
 export class MedicalCenterService {
 
-  urlServices: string;
+  private urlServices: string;
 
   constructor(private http: HttpClient, private serviceUrlService: ServiceUrlService) {
     this.urlServices = serviceUrlService.getUrlService().urlServices;
   }
 
   getAll() {
-    return this.http.get<RequestResult<MedicalCenter[]>>(this.urlServices + 'medical-center/getByPatientId').pipe(take(1), map(reqRes => {
+    return this.http.get<RequestResult<MedicalCenter[]>>(this.urlServices + 'medical-center/getall').pipe(take(1), map(reqRes => {
       return this.resolveResponse(reqRes);
     }));
   }
