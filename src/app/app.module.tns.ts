@@ -10,6 +10,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterMedicalEmergencyComponent } from './home/register-medical-emergency/register-medical-emergency.component';
+import { SocketIOModule } from 'nativescript-socketio/angular';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RegisterMedicalEmergencyComponent } from './home/register-medical-emerg
     RegisterMedicalEmergencyComponent
   ],
   imports: [
+    // SocketIOModule.forRoot('https://accesibilidad-back-end.herokuapp.com/'),
     NativeScriptModule,
     NativeScriptHttpClientModule,
     NativeScriptFormsModule,

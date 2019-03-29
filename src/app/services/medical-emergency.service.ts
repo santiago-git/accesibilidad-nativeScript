@@ -28,7 +28,9 @@ export class MedicalEmergencyService {
   }
 
   getByPatientId() {
+    console.log(this.patient.id)
     return this.http.get<RequestResult<MedicalEmergency[]>>(this.urlServices + 'medical-emergency/getByPatientId/' + this.patient.id).pipe(take(1), map(reqRes => {
+      console.log(reqRes)
       return this.resolveResponse(reqRes);
     }));
   }

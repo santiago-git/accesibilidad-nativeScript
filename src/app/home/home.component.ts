@@ -4,6 +4,9 @@ import * as geolocation from 'nativescript-geolocation';
 import { Patient, MedicalEmergency, ClinicHistory, MedicalCenter } from '~/app/models';
 import { SessionService, MedicalEmergencyService, ClinicHistoryService, MedicalCenterService } from '~/app/services';
 import { SelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
+import * as camera from 'nativescript-camera';
+import { fromAsset } from 'tns-core-modules/image-source';
+import { SocketIO } from 'nativescript-socketio';
 
 @Component({
   moduleId: module.id,
@@ -22,33 +25,61 @@ export class HomeComponent implements OnInit {
   medicalEmergency: MedicalEmergency;
   @ViewChild('patient_description') patient_description: ElementRef;
   medicalCenters: MedicalCenter[];
-  public clinicHistory: ClinicHistory[];
-
-  public imageTaken: any;
-  public saveToGallery: boolean = true;
-  public keepAspectRatio: boolean = true;
-  public width: number = 300;
-  public height: number = 300;
+  clinicHistory: ClinicHistory[];
+  medicalEmergencies: MedicalEmergency[];
+  image: string;
 
   constructor(private sessionService: SessionService,
     private medicalEmergencyService: MedicalEmergencyService,
     private medicalCenterService: MedicalCenterService,
-    private clinicHistoryService: ClinicHistoryService) {
+    private clinicHistoryService: ClinicHistoryService,
+    // private socketIO: SocketIO
+  ) {
     this.session = sessionService.getSession();
     this.medicalEmergency = new MedicalEmergency(this.session.id, '', 0, 0);
     this.getLocation();
-    this.getClinicHistory();
+    // this.getClinicHistory();
     this.getMedicalCenters();
+    this.getMedicalEmergencies();
     // this.onTakePhoto();
     // this.enableLocation();
     this.tabSelectedIndex = 0;
   }
 
-  ngOnInit(): void { }
+
+  ngOnInit(): void {
+    // this.socketIO.connect();
+  }
+
+
+  takePicture() {
+    camera.takePicture({ saveToGallery: false }).then(imageAsset => {
+      console.log('Result is an image asset instance');
+      // const image = new imageModule.Image();
+      fromAsset(imageAsset).then(res => {
+        const base64 = res.toBase64String('jpg', 100);
+        this.image = 'data:image/png;base64,' + base64;
+        console.log(base64);
+      });
+      // imageAsset.getImageAsync(res => {
+      //   console.log(res);
+      // });
+
+      // image.src = imageAsset;
+    }).catch(err => {
+      console.log('Error -> ' + err.message);
+    });
+  }
 
   getMedicalCenters() {
     this.medicalCenterService.getAll().subscribe(list => {
       this.medicalCenters = list;
+    });
+  }
+
+  getMedicalEmergencies() {
+    this.medicalEmergencyService.getByPatientId().subscribe(list => {
+      this.medicalEmergencies = list;
     });
   }
 
@@ -59,7 +90,7 @@ export class HomeComponent implements OnInit {
   }
 
   public onItemTap(args) {
-    console.log("Item Tapped at cell index: " + args.index);
+    console.log('Item Tapped at cell index: ' + args.index);
   }
 
   private enableLocation() {
@@ -153,11 +184,11 @@ export class HomeComponent implements OnInit {
     if (args.oldIndex !== -1) {
       const newIndex = args.newIndex;
       if (newIndex === 0) {
-        this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
+        this.tabSelectedIndexResult = 'Profile Tab (tabSelectedIndex = 0 )';
       } else if (newIndex === 1) {
-        this.tabSelectedIndexResult = "Stats Tab (tabSelectedIndex = 1 )";
+        this.tabSelectedIndexResult = 'Stats Tab (tabSelectedIndex = 1 )';
       } else if (newIndex === 2) {
-        this.tabSelectedIndexResult = "Settings Tab (tabSelectedIndex = 2 )";
+        this.tabSelectedIndexResult = 'Settings Tab (tabSelectedIndex = 2 )';
       }
       // alert(`Selected index has changed ( Old index: ${args.oldIndex} New index: ${args.newIndex} )`)
 

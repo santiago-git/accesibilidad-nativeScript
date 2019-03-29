@@ -34,6 +34,7 @@
     "nativescript-angular": "~7.2.0",
     "nativescript-camera": "^4.4.0",
     "nativescript-geolocation": "^5.0.0",
+    "nativescript-socketio": "^3.2.1",
     "nativescript-theme-core": "~1.0.4",
     "reflect-metadata": "~0.1.12",
     "rxjs": "~6.3.3",

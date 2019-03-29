@@ -2,6 +2,22 @@
     <ActionBar title="Sistema de emergencias">
         <ActionItem icon="res://icon" (tap)="logout()" ios.position="left"></ActionItem>
     </ActionBar>
+    <StackLayout *tabItem="{title: 'Emergencias reportadas'}">
+        <ListView [items]="medicalEmergencies" (itemTap)="onItemTap($event)" class="list-group">
+            <ng-template let-medicalEmergency="item" let-i="index" let-odd="odd" let-even="even">
+                <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
+                <StackLayout orientation="vertical">
+                    <!-- <Label text="Diagnóstico: " textWrap="true"></Label> -->
+                    <Label [text]="medicalEmergency.patient_description"></Label>
+                    <Label [text]="'Fecha: ' + (medicalEmergency.createdAt | date: 'dd/MM/yyyy hh:mm a')"></Label>
+                    <Label *ngIf="medicalEmergency.state !=='Asignado'" text="Sin asignar"></Label>
+                    <Label *ngIf="medicalEmergency.state ==='Asignado'" text="Asignado"></Label>
+
+                    <!-- <Label [text]="country.createdAt"></Label> -->
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </StackLayout>
     <StackLayout *tabItem="{title: 'Centros de atención médica'}">
         <ListView [items]="medicalCenters" (itemTap)="onItemTap($event)" class="list-group">
             <ng-template let-medicalCenter="item" let-i="index" let-odd="odd" let-even="even">
@@ -16,10 +32,9 @@
             </ng-template>
         </ListView>
     </StackLayout>
-    <StackLayout *tabItem="{title: 'Historia clinica'}">
+    <!-- <StackLayout *tabItem="{title: 'Historia clinica'}">
         <ListView [items]="clinicHistory" (itemTap)="onItemTap($event)" class="list-group">
             <ng-template let-country="item" let-i="index" let-odd="odd" let-even="even">
-                <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
                 <StackLayout orientation="vertical" class="list-group-item">
                     <Label [text]="'Diagnóstico: '+country.diagnosis"></Label>
                     <Label [text]="'Fecha: '+(country.createdAt | date: 'dd/MM/yyyy hh:mm a')"></Label>
@@ -27,7 +42,7 @@
                 </StackLayout>
             </ng-template>
         </ListView>
-    </StackLayout>
+    </StackLayout> -->
     <StackLayout *tabItem="{title: 'Reportar emergencia'}">
         <StackLayout orientation="vertical" horizontalAlignment="center" verticalAlignment="center" class="form">
             <Label [text]="message" textWrap="true" class="label-info"></Label>
