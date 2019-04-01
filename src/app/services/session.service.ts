@@ -10,7 +10,7 @@ export class SessionService {
 
   constructor(private routerExtensions: RouterExtensions) { }
 
-  static isUserLoggedIn(): boolean {
+  isUserLoggedIn(): boolean {
     const sessionString = appSettings.getString('session');
     return sessionString && sessionString !== '';
   }
@@ -32,12 +32,10 @@ export class SessionService {
       try {
         return JSON.parse(sessionString);
       } catch (error) {
-        console.log('SessionService', 'No se pudo guardar el usuario')
+        console.log('SessionService', 'No se pudo obtener el usuario')
+        return null;
       }
     }
-    console.log(sessionString);
-
-    this.logOut();
     return null;
   }
 
@@ -52,14 +50,14 @@ export class SessionService {
         }
 
       } catch (error) {
-        console.log('SessionService', 'No se pudo guardar el usuario')
+        console.log('SessionService', 'No se pudo realizar login de paciente');
       }
     }
   }
 
   logOut() {
     appSettings.remove('session');
-    this.routerExtensions.navigate(['/login'], { clearHistory: true });
+    this.routerExtensions.navigate(['/login'], { clearHistory: true, preserveFragment: false });
   }
 
 }

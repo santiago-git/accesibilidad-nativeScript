@@ -12,8 +12,8 @@ import { PatientService, SessionService } from '~/app/services';
 export class LoginComponent {
   isLoggingIn = true;
   credentials: Credentials = {
-    user: 'paciente1@gmail.com',
-    password: '123456789'
+    user: 'davidn@gmail.com',
+    password: 'davidn@gmail.com'
   };
   processing = false;
   @ViewChild('user') user: ElementRef;
@@ -24,6 +24,9 @@ export class LoginComponent {
     private routerExtensions: RouterExtensions,
     private patientService: PatientService,
     private sessionService: SessionService) {
+    if (sessionService.getSession()) {
+      this.routerExtensions.navigate(['/home'], { clearHistory: true });
+    }
     this.page.actionBarHidden = true;
     // this.credentials = new Credentials();
     // this.credentials.user = "user@nativescript.org";

@@ -6,7 +6,7 @@ import { SessionService, MedicalEmergencyService, ClinicHistoryService, MedicalC
 import { SelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
 import * as camera from 'nativescript-camera';
 import { fromAsset } from 'tns-core-modules/image-source';
-import { SocketIO } from 'nativescript-socketio';
+import * as SocketIO from 'nativescript-socketio';
 
 @Component({
   moduleId: module.id,
@@ -33,9 +33,8 @@ export class HomeComponent implements OnInit {
     private medicalEmergencyService: MedicalEmergencyService,
     private medicalCenterService: MedicalCenterService,
     private clinicHistoryService: ClinicHistoryService,
-    // private socketIO: SocketIO
   ) {
-    this.session = sessionService.getSession();
+    this.session = this.sessionService.getSession();
     this.medicalEmergency = new MedicalEmergency(this.session.id, '', 0, 0);
     this.getLocation();
     // this.getClinicHistory();
@@ -48,17 +47,32 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.socketIO.connect();
+    // var socketIO = new SocketIO.SocketIO('https://accesibilidad-back-end.herokuapp.com/');
   }
 
 
   takePicture() {
-    camera.takePicture({ saveToGallery: false }).then(imageAsset => {
+
+    camera.requestPermissions().then(
+      function success() {
+        console.log('acceso a camara');
+
+        // permission request accepted or already granted 
+        // ... call camera.takePicture here ...
+      },
+      function failure() {
+        // permission request rejected
+        // ... tell the user ...
+      }
+    );
+
+    camera.takePicture({ saveToGallery: false, }).then(imageAsset => {
       console.log('Result is an image asset instance');
       // const image = new imageModule.Image();
       fromAsset(imageAsset).then(res => {
-        const base64 = res.toBase64String('jpg', 100);
-        this.image = 'data:image/png;base64,' + base64;
+        const base64 = res.toBase64String('jpg', 10);
+        this.medicalEmergency.photo = 'data:image/png;base64,' + base64;
+        // this.image = 'data:image/png;base64,' + base64;
         console.log(base64);
       });
       // imageAsset.getImageAsync(res => {
@@ -78,8 +92,10 @@ export class HomeComponent implements OnInit {
   }
 
   getMedicalEmergencies() {
+    this.processing = true;
     this.medicalEmergencyService.getByPatientId().subscribe(list => {
       this.medicalEmergencies = list;
+      this.processing = false;
     });
   }
 
@@ -141,6 +157,7 @@ export class HomeComponent implements OnInit {
         this.medicalEmergency = new MedicalEmergency(this.session.id, '', 0, 0);
         this.alert('La emergencia se ha reportado satisfactoriamente');
         this.processing = false;
+        this.getMedicalEmergencies();
       }, err => {
         this.processing = false;
         alert(err);

@@ -1,4 +1,5 @@
 import { Patient } from './patient';
+import { MedicalCenter } from './medical-center';
 
 export class MedicalEmergency {
     constructor(
@@ -15,6 +16,7 @@ export class MedicalEmergency {
         public patient_description?: string,
         public doctor_description?: string,
         public patient?: Patient,
+        public medicalCenter?: MedicalCenter,
         public createdAt?: Date,
         public updatedAt?: Date
     ) { }

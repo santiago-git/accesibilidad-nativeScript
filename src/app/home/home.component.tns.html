@@ -10,10 +10,19 @@
                     <!-- <Label text="Diagnóstico: " textWrap="true"></Label> -->
                     <Label [text]="medicalEmergency.patient_description"></Label>
                     <Label [text]="'Fecha: ' + (medicalEmergency.createdAt | date: 'dd/MM/yyyy hh:mm a')"></Label>
-                    <Label *ngIf="medicalEmergency.state !=='Asignado'" text="Sin asignar"></Label>
-                    <Label *ngIf="medicalEmergency.state ==='Asignado'" text="Asignado"></Label>
+                    <!-- <StackLayout *ngIf="medicalEmergency.state ==='Asignado'" orientation="vertical">
+                        <Label
+                            [text]="medicalEmergency.updatedAt | date: 'dd/MM/yyyy hh:mm a'"></Label>
+                        <Label [text]="medicalEmergency.medicalCenter?.name"></Label>
+                    </StackLayout> -->
 
-                    <!-- <Label [text]="country.createdAt"></Label> -->
+                    <StackLayout *ngIf="medicalEmergency.state ==='Asignado'" orientation="vertical">
+                        <Label textWrap="true" [text]="'Asignado a '+medicalEmergency.medicalCenter.name"></Label>
+                        <Label
+                            [text]="'Actualizado ' + (medicalEmergency.updatedAt | date: 'dd/MM/yyyy hh:mm a')"></Label>
+                    </StackLayout>
+                    <Label *ngIf="medicalEmergency.state !=='Asignado'" text="Estado: Sin asignar"></Label>
+
                 </StackLayout>
             </ng-template>
         </ListView>
@@ -69,8 +78,12 @@
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
+            <Button [isEnabled]="!medicalEmergency.photo" (tap)="takePicture()" text="Tomar foto" class="btn btn-primary" ></Button>
+
             <Button [isEnabled]="!processing" text="Registrar emergencia" (tap)="createMedicalEmergency()"
                 class="btn btn-primary"></Button>
+
+            <!-- <Image class="logo" [src]="image"></Image> -->
             <!-- <Button class="btn btn-primary" text="Cerrar sesión" (tap)="logout()"></Button> -->
 
             <ActivityIndicator [busy]="processing"></ActivityIndicator>

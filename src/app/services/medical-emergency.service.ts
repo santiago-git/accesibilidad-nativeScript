@@ -22,17 +22,18 @@ export class MedicalEmergencyService {
   }
 
   save(medicalEmergency: MedicalEmergency) {
-    return this.http.post<RequestResult<MedicalEmergency>>(this.urlServices + 'medical-emergency/save', medicalEmergency).pipe(take(1), map(reqRes => {
-      return this.resolveResponse(reqRes);
-    }));
+    return this.http.post<RequestResult<MedicalEmergency>>(this.urlServices + 'medical-emergency/save', medicalEmergency)
+      .pipe(take(1), map(reqRes => {
+        return this.resolveResponse(reqRes);
+      }));
   }
 
   getByPatientId() {
-    console.log(this.patient.id)
-    return this.http.get<RequestResult<MedicalEmergency[]>>(this.urlServices + 'medical-emergency/getByPatientId/' + this.patient.id).pipe(take(1), map(reqRes => {
-      console.log(reqRes)
-      return this.resolveResponse(reqRes);
-    }));
+    this.patient = this.sessionService.getSession();
+    return this.http.get<RequestResult<MedicalEmergency[]>>(this.urlServices + 'medical-emergency/getByPatientId/' + this.patient.id)
+      .pipe(take(1), map(reqRes => {
+        return this.resolveResponse(reqRes);
+      }));
   }
 
   private resolveResponse<T>(reqRes: RequestResult<T>) {
